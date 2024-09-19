@@ -176,6 +176,17 @@ public class RenardeResourceTest {
     }
 
     @Test
+    public void testValidationErrorOnNamedRestForm() {
+        given()
+                .when()
+                .formParam("foo", "123456")
+                .post("/Application/withLengthValidation")
+                .then()
+                .statusCode(200)
+                .body(is("Got 'foo' param: 123456, has errors: true, 'foo' error: length must be between 2 and 4"));
+    }
+
+    @Test
     public void testValidationErrorFlash() {
         RenardeCookieFilter cookieFilter = new RenardeCookieFilter();
         String uri = given()

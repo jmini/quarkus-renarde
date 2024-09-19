@@ -15,6 +15,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 
+import org.hibernate.validator.constraints.Length;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
@@ -101,6 +102,12 @@ public class Application extends Controller {
         }
         // make sure errors show up even without a redirect
         return Templates.validatedForm();
+    }
+
+    @POST
+    public String withLengthValidation(@RestForm("foo") @Length(min = 2, max = 4) String param) {
+        return "Got 'foo' param: " + param + ", has errors: " + validation.hasErrors() + ", 'foo' error: "
+                + validation.getError("foo");
     }
 
     @Path("/absolute")
